@@ -1,0 +1,12 @@
+{
+  "DB_HOST": "localhost",
+  "DB_PORT": 5432,
+  "DB_NAME": "mangrove_db",
+  "DB_USER": "postgres",
+  "DB_PASSWORD": "postgres",
+  "XRPL_NETWORK": "testnet",
+  "JWT_SECRET": "dev-secret-change-me",
+  "AUTH_ENABLED": false,
+  "MARKETPLACE_FEE_PERCENT": 1.0,
+  "DEX_FEE_PERCENT": 0.05
+}

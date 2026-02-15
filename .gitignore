@@ -1,0 +1,55 @@
+# Claude Code - local/personal files
+.claude/settings.local.json
+.claude/CLAUDE.local.md
+.claude/agent-memory/
+.claude/agent-memory-local/
+CLAUDE.local.md
+
+# Environment and secrets
+.env
+.env.*
+secrets/
+
+# Separate repos - never track
+openclaw/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.cover
+
+# Local config
+src/shared/config/local-config.json
+
+# Node (kept for app-template reference)
+node_modules/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Docker
+*.pid

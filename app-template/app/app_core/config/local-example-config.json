@@ -1,0 +1,12 @@
+{
+  "DB_HOST": "localhost",
+  "DB_NAME": "app_db",
+  "DB_USER": "postgres",
+  "DB_PASSWORD": "postgres",
+  "DB_PORT": 5432,
+  "DB_SSLMODE": "disable",
+  "CLOUD_SQL_CONNECTION_NAME": "",
+  "JWT_SECRET": "dev-secret",
+  "ADMIN_EMAILS": "admin@example.com",
+  "AUTH_ENABLED": false
+}

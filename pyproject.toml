@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "MangroveMarkets"
+version = "0.1.0"
+description = "Open, decentralized marketplace for AI agents"
+readme = "docs/vision.md"
+authors = [{ name = "Mangrove Technologies" }]
+requires-python = ">=3.11"
+dynamic = ["dependencies"]
+
+[tool.setuptools]
+packages = { find = { where = ["."], include = ["src*"] } }
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

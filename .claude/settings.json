@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read(docs/**)",
+      "Read(src/**)",
+      "Read(tests/**)",
+      "Read(.claude/agents/**)",
+      "Read(.claude/rules/**)",
+      "Read(infra/**)",
+      "Read(.github/**)",
+      "Edit(src/**)",
+      "Edit(docs/**)",
+      "Edit(tests/**)",
+      "Edit(.claude/agents/**)",
+      "Edit(infra/**)",
+      "Edit(.github/**)",
+      "Bash(pip install *)",
+      "Bash(pip freeze *)",
+      "Bash(python *)",
+      "Bash(pytest *)",
+      "Bash(uv *)",
+      "Bash(docker compose *)",
+      "Bash(docker build *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(pwd)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)",
+      "Bash(git reset --hard *)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(secrets/**)",
+      "Read(**/*secret*)",
+      "Read(**/*credential*)",
+      "Read(openclaw/**)",
+      "Edit(openclaw/**)",
+      "Write(openclaw/**)"
+    ],
+    "ask": [
+      "Bash(git push *)"
+    ]
+  }
+}
