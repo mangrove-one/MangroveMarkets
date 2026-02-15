@@ -1,6 +1,0 @@
-project_id   = "your-gcp-project"
-region       = "us-central1"
-environment  = "dev"
-service_name = "app-template-dev"
-repo_name    = "app-template-repo"
-image        = "us-central1-docker.pkg.dev/your-gcp-project/app-template-repo/app-template:latest"
