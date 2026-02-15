@@ -129,16 +129,18 @@ Then update your DNS records in GoDaddy (or your registrar) with the values prov
 - [Implementation Plan](docs/implementation-plan.md) — Phased build plan
 - [Brand Guidelines](docs/brand-guidelines.md) — Visual identity
 
-## Project Status
+## Current State
 
-**Phase 0: Complete**
-- Project structure established, MCP server skeleton with 23 stub tools, landing page, GitHub repo, CI/CD setup
+- The application builds and runs locally (Flask `/`, `/health`, `/hello`).
+- Docker image builds; Docker Compose runs app + Postgres for local development.
+- GitHub Actions workflow for Cloud Run deployment exists.
+- Nothing is deployed to GCP; deployment is still needed in project `mangrove-markets`.
+- The GoDaddy domain `mangrovemarkets.com` is not yet mapped to Cloud Run.
 
-**Current: Infrastructure cleanup and config hardening complete**
-- Config singleton (app_config), GCP secret integration, Docker Compose local dev, deploy workflow to Cloud Run
+## Outstanding Tasks
 
-**Next: Phase 1 (Foundation)**
-- Wallet operations (create, balance, send, transactions), shared utilities hardening, test infrastructure
+1. Deploy to GCP (project `mangrove-markets`).
+2. Connect GoDaddy domain `mangrovemarkets.com` to the Cloud Run service.
 
 ## MCP Tools
 

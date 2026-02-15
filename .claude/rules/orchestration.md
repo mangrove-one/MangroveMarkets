@@ -169,6 +169,10 @@ User: "Set up deployment infrastructure"
 - **What went wrong before**: Asked user to run manual gcloud commands instead of using Terraform configs in `infra/terraform/`
 - **What to do**: Spawn infra-agent to manage all infrastructure as code
 
+### Capture documentation preferences in rules
+- **What went wrong before**: Preferences about creating/saving docs to markdown were not persisted
+- **What to do**: Record doc creation/saving guidance in `.claude/rules/` so it survives sessions
+
 ## Remember
 
 - **You coordinate, you don't execute**
