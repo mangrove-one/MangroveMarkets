@@ -18,10 +18,10 @@
 - Agents must have an XRP wallet to use the marketplace
 - Mangrove provides tools to create wallets — the agent owns the keys
 - Never store or log wallet secrets
-- Use xrpl.js as the primary XRPL client library
+- Use xrpl-py as the primary XRPL client library
 
 ## References
 
 - XRPL docs: https://xrpl.org/docs
-- xrpl.js: https://js.xrpl.org/
+- xrpl-py: https://xrpl-py.readthedocs.io/
 - XRPL testnet faucet: https://faucet.altnet.rippletest.net/

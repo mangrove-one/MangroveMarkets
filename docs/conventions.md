@@ -38,12 +38,12 @@ import asyncio
 import os
 from datetime import datetime
 
-from fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP
 from pydantic import BaseModel
 import xrpl
 
 from src.marketplace.listing_service import ListingService
-from src.shared.errors import ToolError
+from src.mcp.errors import tool_error
 ```
 
 ## Error handling
@@ -164,7 +164,7 @@ async def create_escrow(
 
 ## Dependencies
 
-- Pin all dependency versions in `requirements.txt` (e.g., `xrpl-py==3.0.0`, not `xrpl-py>=3`).
+- Use minimum version constraints in `requirements.txt` (e.g., `xrpl-py>=4.0.0`). Pin exact versions only for critical dependencies where minor version changes could break functionality.
 - Minimize external dependencies. Prefer standard library where reasonable.
 - Vet new dependencies for maintenance status, security, and license compatibility before adding.
 

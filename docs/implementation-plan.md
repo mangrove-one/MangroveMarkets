@@ -24,7 +24,7 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 
 ## Phase 0: Project Setup
 
-**Status**: This phase (current work)
+**Status**: Complete
 
 ### Deliverables
 - Project directory structure (`src/`, `tests/`, `infra/`, `.github/`)
@@ -42,13 +42,13 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 - Orchestrator handles all Phase 0 work
 
 ### Verification
-- [ ] All directories and `__init__.py` files exist
-- [ ] `pip install -r requirements.txt` succeeds
-- [ ] `python -c "from src.mcp.server import mcp"` imports without error
-- [ ] `docker compose build` succeeds
-- [ ] Each domain's `tools.py` and `models.py` imports independently
-- [ ] `docs/specification.md` covers all tools, models, flows
-- [ ] `.claude/agents/` has 7 agent definitions
+- [x] All directories and `__init__.py` files exist
+- [x] `pip install -r requirements.txt` succeeds
+- [x] `python -c "from src.mcp.server import mcp"` imports without error
+- [x] `docker compose build` succeeds
+- [x] Each domain's `tools.py` and `models.py` imports independently
+- [x] `docs/specification.md` covers all tools, models, flows
+- [x] `.claude/agents/` has 11 agent definitions
 
 ---
 
@@ -246,7 +246,7 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 ### Subagent Assignments
 | Subagent | Task |
 |----------|------|
-| Orchestrator or dedicated agent | Integration implementations |
+| integration-agent | Integration implementations |
 
 ### Verification
 - [ ] At least one `integration_*` tool works end-to-end
@@ -337,4 +337,14 @@ After Phase 1 completes:
 - **Integration work** (Phase 7) can happen anytime after Phase 1
 - **Infra Agent** can prepare Terraform and CI/CD at any point
 
-Maximum parallelism: 4 subagents working simultaneously (marketplace, dex, metrics, infra/integrations).
+Maximum parallelism: 5 subagents working simultaneously (marketplace, dex, metrics, integrations, infra).
+
+### Cross-Cutting Agents (Available at Any Phase)
+
+| Agent | Role |
+|-------|------|
+| ui-agent | Frontend work — landing pages, dashboards, agent-facing UIs |
+| qa-agent | E2E testing, integration testing, cross-domain test flows |
+| code-review-agent | Convention compliance, code quality, cross-agent consistency checks |
+
+These agents can be invoked at any phase and are not tied to a specific phase's deliverables.

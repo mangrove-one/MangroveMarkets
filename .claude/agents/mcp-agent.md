@@ -66,6 +66,6 @@ def create_mcp_server() -> FastMCP:
 
 ### Error Utilities
 ```python
-def tool_error(code: str, message: str, suggestion: str = "") -> dict:
-    return {"error": True, "code": code, "message": message, "suggestion": suggestion}
+def tool_error(code: str, message: str, suggestion: str = "") -> str:
+    return json.dumps({"error": True, "code": code, "message": message, "suggestion": suggestion})
 ```

@@ -26,7 +26,10 @@ Both are delivered as an MCP server with tools.
 ### Local Development
 
 ```bash
-# Install dependencies
+# Install in editable mode
+pip install -e .
+
+# Or install from requirements.txt
 pip install -r requirements.txt
 
 # Run the app
@@ -38,6 +41,10 @@ python -m src.app
 ### Run with Docker
 
 ```bash
+# Build and run with Docker Compose
+docker compose up --build
+
+# Or build and run manually
 docker build -t mangrovemarkets .
 docker run -p 8080:8080 mangrovemarkets
 ```
@@ -124,21 +131,14 @@ Then update your DNS records in GoDaddy (or your registrar) with the values prov
 
 ## Project Status
 
-**Phase 0: Complete** ✅
-- Project structure established
-- MCP server skeleton with 23 tools (stubs)
-- Landing page deployed
-- GitHub repo and CI/CD setup
+**Phase 0: Complete**
+- Project structure established, MCP server skeleton with 23 stub tools, landing page, GitHub repo, CI/CD setup
 
-**Current Phase: Infrastructure Baseline**
-- GCP Cloud Run deployment
-- Custom domain configuration
-- Production-ready hosting
+**Current: Infrastructure cleanup and config hardening complete**
+- Config singleton (app_config), GCP secret integration, Docker Compose local dev, deploy workflow to Cloud Run
 
 **Next: Phase 1 (Foundation)**
-- Wallet operations (create, balance, send, transactions)
-- Shared utilities hardening
-- Test infrastructure
+- Wallet operations (create, balance, send, transactions), shared utilities hardening, test infrastructure
 
 ## MCP Tools
 

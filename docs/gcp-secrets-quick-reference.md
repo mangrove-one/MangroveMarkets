@@ -34,15 +34,15 @@ gcloud secrets add-iam-policy-binding my-secret \
 **src/shared/config/prod-config.json:**
 ```json
 {
-  "DB_PASSWORD": "secret:mangrove-prod-db:password",
-  "JWT_SECRET": "secret:mangrove-prod-auth:jwt_secret"
+  "DB_PASSWORD": "secret:mangrovemarkets-config-prod:DB_PASSWORD",
+  "JWT_SECRET": "secret:mangrovemarkets-config-prod:JWT_SECRET"
 }
 ```
 
 ## Usage in Environment
 
 ```bash
-export DB_PASSWORD="secret:mangrove-prod-db:password"
+export DB_PASSWORD="secret:mangrovemarkets-config-prod:DB_PASSWORD"
 export ENVIRONMENT=prod
 python src/app.py
 ```
@@ -61,8 +61,8 @@ password = manager.get_secret_property("db-creds", "password")
 value = resolve_secret_value("secret:db-creds:password")
 
 # Via config
-from src.shared.config import config
-db_pass = config.DB_PASSWORD  # Auto-resolved if configured
+from src.shared.config import app_config
+db_pass = app_config.DB_PASSWORD  # Auto-resolved if configured
 ```
 
 ## Common Commands
@@ -123,14 +123,14 @@ GOOGLE_APPLICATION_CREDENTIALS  # Optional: Path to service account key
 
 ## Security Checklist
 
-- [ ] Never commit secrets to git
-- [ ] Use `.gitignore` for credential files
-- [ ] Separate secrets by environment (dev/test/prod)
-- [ ] Use least-privilege IAM roles
-- [ ] Rotate secrets regularly
-- [ ] Enable Cloud Audit Logs
-- [ ] Use service account keys only when necessary
-- [ ] Delete unused secrets
+- Never commit secrets to git
+- Use `.gitignore` for credential files
+- Separate secrets by environment (dev/test/prod)
+- Use least-privilege IAM roles
+- Rotate secrets regularly
+- Enable Cloud Audit Logs
+- Use service account keys only when necessary
+- Delete unused secrets
 
 ## Examples
 

@@ -13,7 +13,7 @@ Maintains shared utilities — configuration, database, authentication, and base
 ## Domain Knowledge
 
 ### Configuration
-- Singleton config loaded from: env vars → GCP Secret Manager → defaults
+- Singleton config (`app_config`) loaded from environment-specific JSON files. `ENVIRONMENT` env var determines which file (defaults to 'local').
 - Key sections: database, XRPL network, MCP server, auth
 - Immutable after initialization
 
@@ -25,14 +25,14 @@ Maintains shared utilities — configuration, database, authentication, and base
 
 ### Authentication
 - JWT-based auth with Bearer token header
-- `@require_auth` decorator for protected tools
+- `@auth_required` decorator for protected tools
 - Toggleable via config (`AUTH_ENABLED`)
 
 ### Shared Types
-- Pydantic v2 base model with common config
-- `WalletAddress` — validated XRPL address
-- `XRPAmount` — float with drops conversion
-- Standard pagination: `{items, total, offset, limit}`
+- `MangroveBaseModel` — Pydantic v2 base model with common config (`from_attributes`, `str_strip_whitespace`)
+- `Category` — enum of marketplace listing categories (data, compute, intelligence, etc.)
+- `PaginatedResponse` — standard pagination with `items`, `total_count`, `next_cursor`
+- `utc_now()` — helper returning current UTC datetime
 
 ### Health Check
 - `/health` endpoint with dependency checks
@@ -45,7 +45,7 @@ Maintains shared utilities — configuration, database, authentication, and base
 - **Never store secrets in memory** longer than needed
 
 ## Exports
-- **`src/shared/config.py`** — Config singleton
+- **`src/shared/config.py`** — `app_config` singleton
 - **`src/shared/db.py`** — Database connection utilities and exception hierarchy
 - **`src/shared/auth/middleware.py`** — Auth middleware and decorators
 - **`src/shared/types.py`** — Shared Pydantic base types

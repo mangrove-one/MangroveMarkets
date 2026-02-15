@@ -10,13 +10,15 @@ This guide walks through connecting your GoDaddy domain to the MangroveMarkets C
 
 ## Step 1: Deploy the App
 
-First, deploy the app to Cloud Run:
+Deployment happens automatically when you push to `main` via GitHub Actions. You can also trigger it manually from the Actions tab.
+
+To verify the deployment:
 
 ```bash
-./deploy.sh us-central1
+gcloud run services describe mangrovemarkets --region=us-central1 --project=mangrove-markets
 ```
 
-Note the service URL that's output at the end (e.g., `https://mangrovemarkets-xxx-uc.a.run.app`).
+Note the service URL from the output (e.g., `https://mangrovemarkets-xxx-uc.a.run.app`).
 
 ## Step 2: Create Domain Mapping in GCP
 

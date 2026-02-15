@@ -41,7 +41,7 @@ htmlcov/
 # Local config
 src/shared/config/local-config.json
 
-# Node (kept for app-template reference)
+# Node (kept for potential frontend tooling)
 node_modules/
 dist/
 build/

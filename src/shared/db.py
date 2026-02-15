@@ -1,12 +1,11 @@
 """Database connection utilities for MangroveMarkets."""
 import os
 import time
-from typing import Optional
 
 import psycopg2
 
-from src.shared.config import config
-from src.shared.db_exceptions import ConnectionError, map_psycopg2_exception
+from src.shared.config import app_config
+from src.shared.db_exceptions import DatabaseConnectionError, map_psycopg2_exception
 
 
 def db_connect(max_retries: int = 3, retry_delay: float = 1.0):
@@ -15,24 +14,26 @@ def db_connect(max_retries: int = 3, retry_delay: float = 1.0):
     Supports both Cloud SQL (via Unix socket) and standard TCP connections.
     """
     if os.path.exists("/cloudsql"):
-        cloud_sql_name = os.environ.get("CLOUD_SQL_CONNECTION_NAME", "")
+        cloud_sql_name = app_config.CLOUD_SQL_CONNECTION_NAME or ""
         if not cloud_sql_name:
             raise ValueError("CLOUD_SQL_CONNECTION_NAME required in Cloud SQL environment")
         return psycopg2.connect(
             host=f"/cloudsql/{cloud_sql_name}",
-            database=config.DB_NAME,
-            user=config.DB_USER,
-            password=config.DB_PASSWORD,
+            database=app_config.DB_NAME,
+            user=app_config.DB_USER,
+            password=app_config.DB_PASSWORD,
         )
 
     conn_args = {
-        "host": config.DB_HOST,
-        "port": config.DB_PORT,
-        "dbname": config.DB_NAME,
-        "user": config.DB_USER,
+        "host": app_config.DB_HOST,
+        "port": app_config.DB_PORT,
+        "dbname": app_config.DB_NAME,
+        "user": app_config.DB_USER,
     }
-    if config.DB_PASSWORD:
-        conn_args["password"] = config.DB_PASSWORD
+    if app_config.DB_PASSWORD:
+        conn_args["password"] = app_config.DB_PASSWORD
+    if app_config.DB_SSLMODE and app_config.DB_SSLMODE != "disable":
+        conn_args["sslmode"] = app_config.DB_SSLMODE
 
     last_exception = None
     for attempt in range(max_retries):

@@ -18,7 +18,7 @@ Both are delivered as an MCP server with tools and skills. Agents are the first-
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/mangrove-technologies/MangroveMarkets.git
+   git clone https://github.com/mangrove-one/MangroveMarkets.git
    cd MangroveMarkets
    ```
 
@@ -30,18 +30,20 @@ Both are delivered as an MCP server with tools and skills. Agents are the first-
    pip install -r requirements.txt
    ```
 
-3. **Set up environment variables:**
+3. **Configure your environment:**
 
-   Copy the example config and fill in any required values (wallet seeds, API keys). Never commit secrets.
+   The project uses JSON config files in `src/shared/config/` -- one per environment (`local-config.json`, `dev-config.json`, `test-config.json`, `prod-config.json`). Set the `ENVIRONMENT` env var to select which config file is loaded. It defaults to `"local"` if unset.
 
    ```bash
-   cp .env.example .env
+   export ENVIRONMENT=local
    ```
+
+   Edit `src/shared/config/local-config.json` to fill in any required values (wallet seeds, API keys). Never commit secrets.
 
 4. **Run the MCP server locally:**
 
    ```bash
-   python -m src.mcp.server
+   python -m src.app
    ```
 
 5. **Run the test suite:**

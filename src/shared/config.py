@@ -1,164 +1,122 @@
-"""Configuration management for MangroveMarkets."""
+"""Configuration management for MangroveMarkets.
+
+Follows the standard config pattern:
+1. ENVIRONMENT or APP_ENV determines which config file to load (defaults to 'local')
+2. configuration-keys.json defines required keys — all must be present
+3. Config values starting with 'secret:' are resolved via GCP Secret Manager
+4. ONE GCP secret per environment (mangrovemarkets-config-{env})
+5. All config values are set as attributes via setattr()
+"""
 import json
 import os
 import sys
-from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
 from .gcp_secret_utils import resolve_secret_value
 
 
-class Config:
-    """Singleton configuration loaded from environment and config files."""
-    _instance: Optional["Config"] = None
+class _Config:
+    """Singleton configuration loaded from environment-specific config files.
+
+    All configuration keys defined in configuration-keys.json are set as
+    instance attributes via setattr(). Access them directly:
+        app_config.DB_HOST, app_config.XRPL_NETWORK, etc.
+    """
+    _instance: Optional["_Config"] = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._raw_config = {}
+            cls._instance._initialized = False
+        return cls._instance
 
     def __init__(self):
-        self._raw_config: dict = {}
-        self._environment: Optional[str] = None
+        if self._initialized:
+            return
+        self._initialized = True
+        self.load_configuration()
 
-    @classmethod
-    def get(cls) -> "Config":
-        if cls._instance is None:
-            cls._instance = cls()
-            cls._instance._load()
-        return cls._instance
+    def load_configuration(self) -> None:
+        """Load and validate configuration from environment-specific JSON file."""
+        environment = os.getenv("ENVIRONMENT") or os.getenv("APP_ENV")
+        if not environment:
+            environment = "local"
+            print(f"ENVIRONMENT/APP_ENV not set — defaulting to '{environment}'")
+        setattr(self, "ENVIRONMENT", environment)
+
+        configuration_keys = self.get_configuration_keys()
+        self.load_config_file()
+        gcp_project_id = os.getenv("GCP_PROJECT_ID")
+        if not gcp_project_id:
+            print("GCP_PROJECT_ID not set. Secret Manager lookups will fail.")
+
+        for key in configuration_keys:
+            if key not in self._raw_config:
+                print(f"Configuration key {key} missing from config file.")
+                sys.exit(1)
+            key_value = self.get_key_value(key)
+            if str(key_value).strip().lower() in {"none", "null"}:
+                key_value = None
+            setattr(self, key, key_value)
+
+    @staticmethod
+    def get_configuration_keys() -> set:
+        """Load required configuration keys from configuration-keys.json."""
+        try:
+            config_dir = os.path.dirname(os.path.abspath(__file__))
+            keys_path = os.path.join(config_dir, "config", "configuration-keys.json")
+            with open(keys_path, "r") as f:
+                keys_list = json.load(f)
+                return set(keys_list["required_keys"])
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            print(f"Failed to load configuration-keys.json: {e}")
+            sys.exit(1)
+
+    def load_config_file(self) -> None:
+        """Load the environment-specific config JSON file."""
+        filename = f"config/{self.ENVIRONMENT}-config.json"
+        try:
+            config_dir = os.path.dirname(os.path.abspath(__file__))
+            file_path = os.path.join(config_dir, filename)
+
+            if not os.path.exists(file_path):
+                print(f"Config file not found: {file_path}")
+                sys.exit(1)
+
+            with open(file_path, "r") as f:
+                config_data = json.load(f)
+
+            self._raw_config.update(config_data)
+
+        except Exception as e:
+            print(f"Error loading {filename}: {e}")
+            sys.exit(1)
+
+    def get_key_value(self, key: str) -> object:
+        """Resolve a config value, fetching from GCP Secret Manager if needed.
+
+        Values starting with 'secret:' use format 'secret:<secret-name>:<property>'
+        and are resolved via GCP Secret Manager.
+
+        Args:
+            key: The configuration key to resolve.
+
+        Returns:
+            The resolved configuration value.
+        """
+        value = self._raw_config.get(key)
+        str_val = str(value)
+        if str_val.startswith("secret:"):
+            # resolve_secret_value handles the secret:name:property parsing
+            value = resolve_secret_value(str_val)
+        return value
 
     @classmethod
     def reset(cls) -> None:
         """Reset singleton for testing."""
         cls._instance = None
 
-    def _load(self) -> None:
-        self._environment = os.environ.get("ENVIRONMENT") or os.environ.get("APP_ENV")
-        if not self._environment:
-            self._environment = "local"
 
-        config_dir = Path(__file__).parent / "config"
-        config_file = config_dir / f"{self._environment}-config.json"
-
-        if config_file.exists():
-            with open(config_file) as f:
-                self._raw_config = json.load(f)
-
-        # Resolve secrets in config values
-        self._raw_config = self._resolve_secrets(self._raw_config)
-
-    def _resolve_secrets(self, config_dict: dict[str, Any]) -> dict[str, Any]:
-        """Recursively resolve secret references in config values.
-
-        Args:
-            config_dict: Configuration dictionary potentially containing secret references
-
-        Returns:
-            Dictionary with resolved secret values
-        """
-        resolved = {}
-        for key, value in config_dict.items():
-            if isinstance(value, dict):
-                resolved[key] = self._resolve_secrets(value)
-            elif isinstance(value, str):
-                try:
-                    resolved[key] = resolve_secret_value(value)
-                except Exception as e:
-                    # Log warning but don't fail - allow fallback to env vars
-                    print(f"Warning: Failed to resolve secret for {key}: {e}", file=sys.stderr)
-                    resolved[key] = value
-            else:
-                resolved[key] = value
-        return resolved
-
-    def _get_value(self, key: str, env_var: str, default: Any) -> Any:
-        """Get config value with secret resolution support.
-
-        Checks in order:
-        1. Resolved config file value
-        2. Environment variable (with secret resolution)
-        3. Default value
-
-        Args:
-            key: Config file key
-            env_var: Environment variable name
-            default: Default value if not found
-
-        Returns:
-            Configuration value
-        """
-        # First check config file (already resolved)
-        if key in self._raw_config:
-            return self._raw_config[key]
-
-        # Then check environment variable (needs resolution)
-        env_value = os.environ.get(env_var)
-        if env_value is not None:
-            try:
-                return resolve_secret_value(env_value)
-            except Exception as e:
-                print(f"Warning: Failed to resolve secret from {env_var}: {e}", file=sys.stderr)
-                return env_value
-
-        return default
-
-    @property
-    def ENVIRONMENT(self) -> str:
-        return self._environment or "local"
-
-    @property
-    def XRPL_NETWORK(self) -> str:
-        return self._get_value("XRPL_NETWORK", "XRPL_NETWORK", "testnet")
-
-    @property
-    def XRPL_NODE_URL(self) -> str:
-        defaults = {
-            "testnet": "https://s.altnet.rippletest.net:51234",
-            "devnet": "https://s.devnet.rippletest.net:51234",
-            "mainnet": "https://xrplcluster.com",
-        }
-        return self._get_value("XRPL_NODE_URL", "XRPL_NODE_URL", defaults.get(self.XRPL_NETWORK, defaults["testnet"]))
-
-    @property
-    def MCP_HOST(self) -> str:
-        return self._get_value("MCP_HOST", "MCP_HOST", "0.0.0.0")
-
-    @property
-    def MCP_PORT(self) -> int:
-        return int(self._get_value("MCP_PORT", "MCP_PORT", "8080"))
-
-    @property
-    def DB_HOST(self) -> str:
-        return self._get_value("DB_HOST", "DB_HOST", "localhost")
-
-    @property
-    def DB_PORT(self) -> int:
-        return int(self._get_value("DB_PORT", "DB_PORT", "5432"))
-
-    @property
-    def DB_NAME(self) -> str:
-        return self._get_value("DB_NAME", "DB_NAME", "mangrove_db")
-
-    @property
-    def DB_USER(self) -> str:
-        return self._get_value("DB_USER", "DB_USER", "postgres")
-
-    @property
-    def DB_PASSWORD(self) -> str:
-        return self._get_value("DB_PASSWORD", "DB_PASSWORD", "postgres")
-
-    @property
-    def JWT_SECRET(self) -> str:
-        return self._get_value("JWT_SECRET", "JWT_SECRET", "dev-secret-change-me")
-
-    @property
-    def AUTH_ENABLED(self) -> bool:
-        val = self._get_value("AUTH_ENABLED", "AUTH_ENABLED", "false")
-        return str(val).lower() in ("true", "1", "yes")
-
-    @property
-    def MARKETPLACE_FEE_PERCENT(self) -> float:
-        return float(self._get_value("MARKETPLACE_FEE_PERCENT", "MARKETPLACE_FEE_PERCENT", "1.0"))
-
-    @property
-    def DEX_FEE_PERCENT(self) -> float:
-        return float(self._get_value("DEX_FEE_PERCENT", "DEX_FEE_PERCENT", "0.05"))
-
-
-config = Config.get()
+# Module-level singleton. Loaded once at import time.
+app_config = _Config()

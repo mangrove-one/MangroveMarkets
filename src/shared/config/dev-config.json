@@ -1,5 +1,4 @@
 {
-  "ENVIRONMENT": "dev",
   "XRPL_NETWORK": "testnet",
   "XRPL_NODE_URL": "https://s.altnet.rippletest.net:51234",
   "MCP_HOST": "0.0.0.0",
@@ -8,11 +7,11 @@
   "DB_PORT": 5432,
   "DB_NAME": "mangrove_dev",
   "DB_USER": "postgres",
-  "DB_PASSWORD": "postgres",
-  "JWT_SECRET": "dev-secret-change-me",
+  "DB_PASSWORD": "secret:mangrovemarkets-config-dev:DB_PASSWORD",
+  "DB_SSLMODE": "disable",
+  "CLOUD_SQL_CONNECTION_NAME": "null",
+  "JWT_SECRET": "secret:mangrovemarkets-config-dev:JWT_SECRET",
   "AUTH_ENABLED": false,
   "MARKETPLACE_FEE_PERCENT": 1.0,
-  "DEX_FEE_PERCENT": 0.05,
-  "_comment": "For GCP Secret Manager references, use format: secret:<secret-name>:<property>",
-  "_example": "DB_PASSWORD could be: secret:mangrove-db-credentials:password"
+  "DEX_FEE_PERCENT": 0.05
 }

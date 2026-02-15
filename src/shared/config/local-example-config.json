@@ -1,12 +1,17 @@
 {
+  "XRPL_NETWORK": "testnet",
+  "XRPL_NODE_URL": "https://s.altnet.rippletest.net:51234",
+  "MCP_HOST": "127.0.0.1",
+  "MCP_PORT": 8080,
   "DB_HOST": "localhost",
   "DB_PORT": 5432,
-  "DB_NAME": "mangrove_db",
+  "DB_NAME": "mangrove_local",
   "DB_USER": "postgres",
   "DB_PASSWORD": "postgres",
-  "XRPL_NETWORK": "testnet",
-  "JWT_SECRET": "dev-secret-change-me",
+  "DB_SSLMODE": "disable",
+  "CLOUD_SQL_CONNECTION_NAME": "null",
+  "JWT_SECRET": "local-dev-secret-not-secure",
   "AUTH_ENABLED": false,
-  "MARKETPLACE_FEE_PERCENT": 1.0,
-  "DEX_FEE_PERCENT": 0.05
+  "MARKETPLACE_FEE_PERCENT": 0.0,
+  "DEX_FEE_PERCENT": 0.0
 }

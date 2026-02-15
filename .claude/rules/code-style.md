@@ -9,9 +9,9 @@
 
 ## File Naming
 
-- Lowercase with hyphens for files: `marketplace-search.ts`, `dex-adapter.ts`
+- Lowercase with underscores for Python modules: `marketplace_search.py`, `dex_adapter.py`
 - No all-caps markdown files except `README.md` and `AGENTS.md`
-- Test files mirror source: `src/marketplace/listing.ts` → `tests/marketplace/listing.test.ts`
+- Test files mirror source: `src/marketplace/listing_service.py` -> `tests/marketplace/test_listing_service.py`
 
 ## Error Handling
 
@@ -23,4 +23,4 @@
 
 - Minimize external dependencies
 - Prefer well-maintained, widely-used packages
-- Pin versions in package.json
+- Pin versions in requirements.txt

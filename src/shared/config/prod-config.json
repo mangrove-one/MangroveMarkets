@@ -1,26 +1,17 @@
 {
-  "ENVIRONMENT": "prod",
   "XRPL_NETWORK": "mainnet",
   "XRPL_NODE_URL": "https://xrplcluster.com",
   "MCP_HOST": "0.0.0.0",
   "MCP_PORT": 8080,
-  "DB_HOST": "secret:mangrove-prod-db:host",
+  "DB_HOST": "secret:mangrovemarkets-config-prod:DB_HOST",
   "DB_PORT": 5432,
-  "DB_NAME": "secret:mangrove-prod-db:database",
-  "DB_USER": "secret:mangrove-prod-db:username",
-  "DB_PASSWORD": "secret:mangrove-prod-db:password",
-  "JWT_SECRET": "secret:mangrove-prod-auth:jwt_secret",
+  "DB_NAME": "secret:mangrovemarkets-config-prod:DB_NAME",
+  "DB_USER": "secret:mangrovemarkets-config-prod:DB_USER",
+  "DB_PASSWORD": "secret:mangrovemarkets-config-prod:DB_PASSWORD",
+  "DB_SSLMODE": "require",
+  "CLOUD_SQL_CONNECTION_NAME": "secret:mangrovemarkets-config-prod:CLOUD_SQL_CONNECTION_NAME",
+  "JWT_SECRET": "secret:mangrovemarkets-config-prod:JWT_SECRET",
   "AUTH_ENABLED": true,
   "MARKETPLACE_FEE_PERCENT": 1.0,
-  "DEX_FEE_PERCENT": 0.05,
-  "_comment": "Production configuration using GCP Secret Manager",
-  "_instructions": [
-    "All sensitive values use secret:<name>:<property> syntax",
-    "Secrets must be created in GCP Secret Manager before deployment",
-    "Required GCP secrets:",
-    "  - mangrove-prod-db: {host, database, username, password}",
-    "  - mangrove-prod-auth: {jwt_secret}",
-    "Ensure GCP_PROJECT_ID environment variable is set",
-    "Service account must have roles/secretmanager.secretAccessor"
-  ]
+  "DEX_FEE_PERCENT": 0.05
 }

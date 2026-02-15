@@ -70,5 +70,5 @@ jobs:
             --min-instances 0 \
             --max-instances 10 \
             --timeout 120 \
-            --set-env-vars "ENV=production" \
+            --set-env-vars "ENVIRONMENT=dev,GCP_PROJECT_ID=mangrove-markets" \
             --project=${{ env.PROJECT_ID }}

@@ -1,0 +1,19 @@
+{
+  "required_keys": [
+    "DB_HOST",
+    "DB_NAME",
+    "DB_USER",
+    "DB_PASSWORD",
+    "DB_PORT",
+    "DB_SSLMODE",
+    "CLOUD_SQL_CONNECTION_NAME",
+    "JWT_SECRET",
+    "AUTH_ENABLED",
+    "XRPL_NETWORK",
+    "XRPL_NODE_URL",
+    "MCP_HOST",
+    "MCP_PORT",
+    "MARKETPLACE_FEE_PERCENT",
+    "DEX_FEE_PERCENT"
+  ]
+}

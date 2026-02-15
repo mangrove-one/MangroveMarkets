@@ -1,53 +1,12 @@
-# Git
+openclaw/
+.idea/
+.claude/
 .git/
-.gitignore
-
-# Python
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.venv/
-venv/
-*.egg-info/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
-
-# Claude Code
-.claude/
-
-# Development
-tests/
-*.md
-!README.md
-docs/
-openclaw/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-logs/
-
-# Secrets
 .env
-.env.*
-secrets/
-src/shared/config/local-config.json
-
-# Docker
-docker-compose.yml
-.dockerignore
-
-# Brand assets (large PDF)
-Mangrove-BrandGuidelines.pdf
+config-template*
+*.md
+!requirements.txt
+tests/
+infra/

@@ -3,14 +3,14 @@ from functools import wraps
 
 from flask import g, request
 
-from src.shared.config import config
+from src.shared.config import app_config
 
 
 def auth_required(f):
     """Decorator to require authentication on Flask routes."""
     @wraps(f)
     def decorated(*args, **kwargs):
-        if not config.AUTH_ENABLED:
+        if not app_config.AUTH_ENABLED:
             return f(*args, **kwargs)
 
         token = _get_token_from_header()

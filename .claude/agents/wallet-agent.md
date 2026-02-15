@@ -49,7 +49,7 @@ Implements wallet management — XRPL wallet creation, balance checks, sending X
 
 ## Exports
 - **`src/wallet/tools.py`** — `register(server)` function that adds `wallet_*` tools to the main FastMCP server
-- **`src/wallet/models.py`** — Pydantic models: WalletInfo, Balance, Transaction
+- **`src/wallet/models.py`** — Pydantic models: WalletInfo, Transaction
 - **`src/wallet/xrpl_client.py`** — `XRPLClient` class for connection management (reused by marketplace escrow)
 
 ## Patterns to Follow

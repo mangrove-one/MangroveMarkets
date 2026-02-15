@@ -123,7 +123,7 @@ resource "google_cloud_run_v2_service" "app" {
       }
 
       env {
-        name  = "APP_ENV"
+        name  = "ENVIRONMENT"
         value = var.environment
       }
 

@@ -12,7 +12,7 @@ requires-python = ">=3.11"
 dynamic = ["dependencies"]
 
 [tool.setuptools]
-packages = { find = { where = ["."], include = ["src*"] } }
+packages = { find = { where = ["."], include = ["src*"], exclude = ["openclaw*"] } }
 
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }

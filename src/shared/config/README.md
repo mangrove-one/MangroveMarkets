@@ -11,11 +11,11 @@ Environment-specific configuration for MangroveMarkets.
 
 ## Usage
 
-The configuration system automatically loads the appropriate config file based on the `ENVIRONMENT` or `APP_ENV` environment variable. If neither is set, it defaults to `local`.
+The configuration system automatically loads the appropriate config file based on the `ENVIRONMENT` or `APP_ENV` environment variable. If neither is set, the app defaults to the 'local' environment.
 
 ```bash
-# Use local config (default)
-python src/app.py
+# Use local config
+ENVIRONMENT=local python src/app.py
 
 # Use dev config
 ENVIRONMENT=dev python src/app.py
@@ -36,34 +36,33 @@ Configuration values can reference secrets stored in GCP Secret Manager using th
 
 ### Examples
 
+One GCP secret per environment (`mangrovemarkets-config-{env}`), containing all sensitive values as a JSON blob:
+
 ```json
 {
-  "DB_PASSWORD": "secret:mangrove-prod-db:password",
-  "JWT_SECRET": "secret:mangrove-prod-auth:jwt_secret",
-  "API_KEY": "secret:third-party-api-keys:openai"
+  "DB_HOST": "secret:mangrovemarkets-config-prod:DB_HOST",
+  "DB_PASSWORD": "secret:mangrovemarkets-config-prod:DB_PASSWORD",
+  "JWT_SECRET": "secret:mangrovemarkets-config-prod:JWT_SECRET"
 }
 ```
 
 ### Setting Up GCP Secrets
 
-1. Create secrets in GCP Secret Manager:
+1. Create ONE JSON secret per environment in GCP Secret Manager:
 
 ```bash
-# Create a JSON secret
-echo '{"username":"postgres","password":"secure123","host":"10.0.0.1","database":"mangrove"}' | \
-  gcloud secrets create mangrove-prod-db --data-file=-
-
-# Create a simple string secret
-echo 'your-jwt-secret-here' | \
-  gcloud secrets create mangrove-prod-auth --data-file=-
+# Create the prod secret with all sensitive config values
+echo '{"DB_HOST":"10.0.0.1","DB_NAME":"mangrove_prod","DB_USER":"postgres","DB_PASSWORD":"secure123","JWT_SECRET":"your-jwt-secret","CLOUD_SQL_CONNECTION_NAME":"project:region:instance"}' | \
+  gcloud secrets create mangrovemarkets-config-prod --data-file=- --project=mangrove-markets
 ```
 
 2. Grant access to your service account:
 
 ```bash
-gcloud secrets add-iam-policy-binding mangrove-prod-db \
+gcloud secrets add-iam-policy-binding mangrovemarkets-config-prod \
   --member="serviceAccount:your-sa@project.iam.gserviceaccount.com" \
-  --role="roles/secretmanager.secretAccessor"
+  --role="roles/secretmanager.secretAccessor" \
+  --project=mangrove-markets
 ```
 
 3. Set the GCP_PROJECT_ID environment variable:
@@ -98,51 +97,29 @@ Then reference properties in config:
 
 ```json
 {
-  "DB_HOST": "secret:mangrove-prod-db:host",
-  "DB_USER": "secret:mangrove-prod-db:username",
-  "DB_PASSWORD": "secret:mangrove-prod-db:password"
+  "DB_HOST": "secret:mangrovemarkets-config-prod:DB_HOST",
+  "DB_USER": "secret:mangrovemarkets-config-prod:DB_USER",
+  "DB_PASSWORD": "secret:mangrovemarkets-config-prod:DB_PASSWORD"
 }
-```
-
-## Environment Variable Overrides
-
-Environment variables always take precedence over config files. They also support the secret syntax:
-
-```bash
-export DB_PASSWORD="secret:mangrove-prod-db:password"
-export ENVIRONMENT=prod
-python src/app.py
 ```
 
 ## Adding New Configuration Values
 
-1. Add the property to the `Config` class in `src/shared/config.py`
-2. Use the `_get_value()` method for automatic secret resolution
-3. Add the value to all environment config files
+1. Add the key to `configuration-keys.json` in the `required_keys` array
+2. Add the value to ALL environment config JSON files (`local`, `dev`, `test`, `prod`)
+3. The key will be automatically set as an attribute via `setattr()` -- no code changes needed in `config.py`
 4. Update this README with documentation
-
-Example:
-
-```python
-@property
-def NEW_CONFIG_VALUE(self) -> str:
-    return self._get_value("NEW_CONFIG_VALUE", "NEW_CONFIG_VALUE", "default-value")
-```
 
 ## Testing
 
 The config system includes a reset mechanism for testing:
 
 ```python
-from src.shared.config import Config
-from src.shared.gcp_secret_utils import reset_secret_manager
+from src.shared.config import _Config
 
-# Reset config for clean test
-Config.reset()
-reset_secret_manager()
-
-# Get fresh instance
-config = Config.get()
+# Reset config singleton for clean test
+# The singleton uses __new__ for instance control; reset() sets _instance = None
+_Config.reset()
 ```
 
 ## Security Notes

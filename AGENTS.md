@@ -88,6 +88,10 @@ MangroveMarkets is designed for parallel development using Claude Code subagents
 | metrics-agent | Metrics | `src/metrics/`, `tests/metrics/` | `src/shared/`, marketplace data |
 | infra-agent | Infrastructure | `Dockerfile`, `docker-compose.yml`, `infra/`, `.github/workflows/` | `src/` (read-only) |
 | shared-agent | Shared Utils | `src/shared/`, `tests/shared/` | All domain `models.py` files |
+| ui-agent | Frontend/UI | `src/static/`, `src/templates/`, `src/frontend/`, `tests/frontend/` | `docs/brand-guidelines.md`, `src/app.py`, `src/shared/config/` |
+| integration-agent | Integrations | `src/integrations/`, `tests/integrations/` | `src/shared/`, `src/mcp/errors.py`, `docs/specification.md` |
+| qa-agent | QA & E2E Testing | `tests/conftest.py`, `tests/e2e/`, `tests/integration/`, `tests/fixtures/` | All `src/` and `tests/` (read-only) |
+| code-review-agent | Code Review | None (read-only reviewer, may update `.claude/rules/`) | All `src/`, `tests/`, `docs/`, `.claude/` |
 
 ### Rules for Subagent Development
 
@@ -122,4 +126,3 @@ See `docs/implementation-plan.md` for the phased build plan with subagent assign
 ## Do Not Modify
 
 - `openclaw/` — separate repository, never touch
-- `app-template/` — reference only, not the active app

@@ -11,7 +11,7 @@ class DatabaseError(Exception):
         self.original_error = original_error
 
 
-class ConnectionError(DatabaseError):
+class DatabaseConnectionError(DatabaseError):
     pass
 
 
@@ -36,7 +36,7 @@ def map_psycopg2_exception(exc: Exception, context: str = "") -> DatabaseError:
     prefix = f"{context}: " if context else ""
 
     if isinstance(exc, psycopg2.OperationalError):
-        return ConnectionError(f"{prefix}Database connection failed", exc)
+        return DatabaseConnectionError(f"{prefix}Database connection failed", exc)
 
     if isinstance(exc, psycopg2.IntegrityError):
         msg = str(exc).lower()

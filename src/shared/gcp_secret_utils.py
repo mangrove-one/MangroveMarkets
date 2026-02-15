@@ -38,7 +38,7 @@ class GCPSecretManager:
             )
 
         self.client = secretmanager.SecretManagerServiceClient()
-        self._cache: dict[str, dict[str, Any]] = {}
+        self._cache: dict[str, str] = {}
 
     def get_secret(self, secret_name: str, version: str = "latest") -> str:
         """Fetch a secret from GCP Secret Manager.
@@ -174,7 +174,7 @@ def resolve_secret_value(value: str) -> Any:
         return value
 
     parts = value.split(":")
-    if len(parts) < 2:
+    if len(parts) < 2 or not parts[1]:
         raise ValueError(
             f"Invalid secret reference '{value}'. "
             "Expected format: secret:<name> or secret:<name>:<property>"

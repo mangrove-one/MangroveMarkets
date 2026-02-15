@@ -33,17 +33,14 @@ Create secrets in GCP Secret Manager using the `gcloud` CLI:
 # Set your project
 export GCP_PROJECT_ID=your-project-id
 
-# Create a JSON secret for database credentials
+# Create ONE JSON secret per environment with all sensitive config values
 echo '{
-  "host": "10.0.0.1",
-  "database": "mangrove_prod",
-  "username": "mangrove_user",
-  "password": "super-secret-password"
-}' | gcloud secrets create mangrove-prod-db --data-file=-
-
-# Create a simple string secret
-echo "your-jwt-secret-here" | \
-  gcloud secrets create mangrove-prod-jwt --data-file=-
+  "DB_HOST": "10.0.0.1",
+  "DB_NAME": "mangrove_prod",
+  "DB_USER": "mangrove_user",
+  "DB_PASSWORD": "super-secret-password",
+  "JWT_SECRET": "your-jwt-secret-here"
+}' | gcloud secrets create mangrovemarkets-config-prod --data-file=-
 ```
 
 ### 3. Grant Access
@@ -55,7 +52,7 @@ Give your service account access to secrets:
 SA_EMAIL=your-sa@your-project.iam.gserviceaccount.com
 
 # Grant access to specific secret
-gcloud secrets add-iam-policy-binding mangrove-prod-db \
+gcloud secrets add-iam-policy-binding mangrovemarkets-config-prod \
   --member="serviceAccount:${SA_EMAIL}" \
   --role="roles/secretmanager.secretAccessor"
 
@@ -109,11 +106,11 @@ In your environment config files (e.g., `prod-config.json`):
 
 ```json
 {
-  "DB_HOST": "secret:mangrove-prod-db:host",
-  "DB_NAME": "secret:mangrove-prod-db:database",
-  "DB_USER": "secret:mangrove-prod-db:username",
-  "DB_PASSWORD": "secret:mangrove-prod-db:password",
-  "JWT_SECRET": "secret:mangrove-prod-jwt"
+  "DB_HOST": "secret:mangrovemarkets-config-prod:DB_HOST",
+  "DB_NAME": "secret:mangrovemarkets-config-prod:DB_NAME",
+  "DB_USER": "secret:mangrovemarkets-config-prod:DB_USER",
+  "DB_PASSWORD": "secret:mangrovemarkets-config-prod:DB_PASSWORD",
+  "JWT_SECRET": "secret:mangrovemarkets-config-prod:JWT_SECRET"
 }
 ```
 
@@ -144,7 +141,7 @@ In your environment config files (e.g., `prod-config.json`):
 Secret syntax also works in environment variables:
 
 ```bash
-export DB_PASSWORD="secret:mangrove-prod-db:password"
+export DB_PASSWORD="secret:mangrovemarkets-config-prod:DB_PASSWORD"
 export ENVIRONMENT=prod
 python src/app.py
 ```
@@ -177,13 +174,9 @@ password = resolve_secret_value("secret:db-creds:password")
 Organize secrets by component and environment:
 
 ```
-mangrove-prod-db          # Database credentials
-mangrove-prod-auth        # Authentication secrets
-mangrove-prod-xrpl        # XRPL wallet seeds
-mangrove-prod-external    # External API keys
-
-mangrove-dev-db           # Dev environment
-mangrove-dev-auth         # Dev environment
+mangrovemarkets-config-prod   # Production (all sensitive values in one JSON blob)
+mangrovemarkets-config-dev    # Development
+mangrovemarkets-config-test   # Testing
 ```
 
 ### JSON Secret Format
@@ -205,11 +198,11 @@ Then reference properties:
 
 ```json
 {
-  "DB_HOST": "secret:mangrove-prod-db:host",
-  "DB_PORT": "secret:mangrove-prod-db:port",
-  "DB_NAME": "secret:mangrove-prod-db:database",
-  "DB_USER": "secret:mangrove-prod-db:username",
-  "DB_PASSWORD": "secret:mangrove-prod-db:password"
+  "DB_HOST": "secret:mangrovemarkets-config-prod:DB_HOST",
+  "DB_PORT": "secret:mangrovemarkets-config-prod:DB_PORT",
+  "DB_NAME": "secret:mangrovemarkets-config-prod:DB_NAME",
+  "DB_USER": "secret:mangrovemarkets-config-prod:DB_USER",
+  "DB_PASSWORD": "secret:mangrovemarkets-config-prod:DB_PASSWORD"
 }
 ```
 
@@ -237,12 +230,12 @@ export GCP_PROJECT_ID=your-project-id
 
 1. Check the secret exists:
    ```bash
-   gcloud secrets describe mangrove-prod-db
+   gcloud secrets describe mangrovemarkets-config-prod
    ```
 
 2. Verify you have access:
    ```bash
-   gcloud secrets get-iam-policy mangrove-prod-db
+   gcloud secrets get-iam-policy mangrovemarkets-config-prod
    ```
 
 ### Error: Permission denied
@@ -250,7 +243,7 @@ export GCP_PROJECT_ID=your-project-id
 Grant the secretAccessor role:
 
 ```bash
-gcloud secrets add-iam-policy-binding mangrove-prod-db \
+gcloud secrets add-iam-policy-binding mangrovemarkets-config-prod \
   --member="serviceAccount:your-sa@project.iam.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor"
 ```
@@ -260,7 +253,7 @@ gcloud secrets add-iam-policy-binding mangrove-prod-db \
 For JSON secrets, verify the property exists:
 
 ```bash
-gcloud secrets versions access latest --secret=mangrove-prod-db
+gcloud secrets versions access latest --secret=mangrovemarkets-config-prod
 ```
 
 The output should show your JSON with the expected property.
@@ -299,15 +292,18 @@ export DB_PASSWORD=my-password
 
 **After:**
 
-1. Create secret:
+1. Add the value to the environment's JSON secret:
    ```bash
-   echo "my-password" | gcloud secrets create mangrove-prod-db-pass --data-file=-
+   # Update the mangrovemarkets-config-prod secret to include DB_PASSWORD
+   gcloud secrets versions access latest --secret=mangrovemarkets-config-prod | \
+     jq '. + {"DB_PASSWORD": "my-password"}' | \
+     gcloud secrets versions add mangrovemarkets-config-prod --data-file=-
    ```
 
 2. Update config:
    ```json
    {
-     "DB_PASSWORD": "secret:mangrove-prod-db-pass"
+     "DB_PASSWORD": "secret:mangrovemarkets-config-prod:DB_PASSWORD"
    }
    ```
 
@@ -322,15 +318,18 @@ export DB_PASSWORD=my-password
 
 **After:**
 
-1. Create secret:
+1. Add the value to the environment's JSON secret:
    ```bash
-   echo "plain-text-password" | gcloud secrets create mangrove-prod-db-pass --data-file=-
+   # Update the mangrovemarkets-config-prod secret to include DB_PASSWORD
+   gcloud secrets versions access latest --secret=mangrovemarkets-config-prod | \
+     jq '. + {"DB_PASSWORD": "plain-text-password"}' | \
+     gcloud secrets versions add mangrovemarkets-config-prod --data-file=-
    ```
 
 2. Update config:
    ```json
    {
-     "DB_PASSWORD": "secret:mangrove-prod-db-pass"
+     "DB_PASSWORD": "secret:mangrovemarkets-config-prod:DB_PASSWORD"
    }
    ```
 
