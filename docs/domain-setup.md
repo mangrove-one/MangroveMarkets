@@ -26,7 +26,8 @@ Run the domain mapping command with your domain:
 gcloud run domain-mappings create \
     --service=mangrovemarkets \
     --domain=YOURDOMAIN.COM \
-    --region=us-central1
+    --region=us-central1 \
+    --project=mangrove-markets
 ```
 
 Replace `YOURDOMAIN.COM` with your actual domain.
@@ -106,7 +107,8 @@ Check certificate status:
 ```bash
 gcloud run domain-mappings describe \
     --domain=YOURDOMAIN.COM \
-    --region=us-central1
+    --region=us-central1 \
+    --project=mangrove-markets
 ```
 
 Look for `resourceRecords` and `certificateStatus: ACTIVE`.
@@ -129,7 +131,8 @@ To use a subdomain like `www.yourdomain.com` or `app.yourdomain.com`:
 gcloud run domain-mappings create \
     --service=mangrovemarkets \
     --domain=www.YOURDOMAIN.COM \
-    --region=us-central1
+    --region=us-central1 \
+    --project=mangrove-markets
 ```
 
 2. Add the DNS records provided by GCP to GoDaddy:

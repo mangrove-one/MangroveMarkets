@@ -1,0 +1,17 @@
+{
+  "ENVIRONMENT": "test",
+  "XRPL_NETWORK": "testnet",
+  "XRPL_NODE_URL": "https://s.altnet.rippletest.net:51234",
+  "MCP_HOST": "127.0.0.1",
+  "MCP_PORT": 8081,
+  "DB_HOST": "localhost",
+  "DB_PORT": 5432,
+  "DB_NAME": "mangrove_test",
+  "DB_USER": "postgres",
+  "DB_PASSWORD": "postgres",
+  "JWT_SECRET": "test-secret-not-for-prod",
+  "AUTH_ENABLED": false,
+  "MARKETPLACE_FEE_PERCENT": 0.0,
+  "DEX_FEE_PERCENT": 0.0,
+  "_comment": "Test environment configuration - no real secrets needed"
+}

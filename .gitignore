@@ -9,6 +9,15 @@ CLAUDE.local.md
 .env
 .env.*
 secrets/
+*.key
+*.pem
+*.json.secret
+*-credentials.json
+service-account*.json
+
+# GCP credentials (never commit!)
+gcp-key.json
+google-credentials.json
 
 # Separate repos - never track
 openclaw/

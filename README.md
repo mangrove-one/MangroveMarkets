@@ -58,19 +58,23 @@ Deployment to Cloud Run happens automatically on every push to `main`:
    # Grant necessary roles
    gcloud projects add-iam-policy-binding mangrove-markets \
        --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
-       --role="roles/run.admin"
+       --role="roles/run.admin" \
+       --project=mangrove-markets
 
    gcloud projects add-iam-policy-binding mangrove-markets \
        --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
-       --role="roles/artifactregistry.admin"
+       --role="roles/artifactregistry.admin" \
+       --project=mangrove-markets
 
    gcloud projects add-iam-policy-binding mangrove-markets \
        --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
-       --role="roles/iam.serviceAccountUser"
+       --role="roles/iam.serviceAccountUser" \
+       --project=mangrove-markets
 
    # Create and download key
    gcloud iam service-accounts keys create key.json \
-       --iam-account=mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com
+       --iam-account=mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com \
+       --project=mangrove-markets
    ```
 
 2. **Add Secret to GitHub**:
@@ -98,7 +102,8 @@ After deployment, map your custom domain:
 gcloud run domain-mappings create \
     --service=mangrovemarkets \
     --domain=yourdomain.com \
-    --region=us-central1
+    --region=us-central1 \
+    --project=mangrove-markets
 ```
 
 Then update your DNS records in GoDaddy (or your registrar) with the values provided by GCP.

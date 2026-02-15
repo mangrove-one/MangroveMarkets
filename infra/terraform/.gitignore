@@ -1,0 +1,36 @@
+# Terraform files
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars.json
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Service account keys (never commit these!)
+*.json
+!backend-*.json
+
+# CLI configuration files
+.terraformrc
+terraform.rc
+
+# Environment variables
+.env
+.env.*
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

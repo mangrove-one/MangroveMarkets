@@ -1,0 +1,6 @@
+project_id   = "mangrove-markets"
+region       = "us-central1"
+environment  = "dev"
+service_name = "mangrovemarkets-dev"
+repo_name    = "mangrove-markets-repo"
+image        = "us-central1-docker.pkg.dev/mangrove-markets/mangrove-markets-repo/mangrovemarkets:latest"
