@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "AppTemplate"
+version = "0.1.0"
+description = "App template with Flask + Cloud Run"
+readme = "../README.md"
+authors = [
+    { name = "Mangrove", email = "dev@mangrove.ai" }
+]
+requires-python = ">=3.10"
+
+dynamic = ["dependencies"]
+
+[tool.setuptools]
+packages = ["app_core", "app_core.routes", "app_core.services", "app_core.utils", "app_core.utils.auth"]
+package-dir = {"app_core" = "app_core"}
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}

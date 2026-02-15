@@ -44,24 +44,51 @@ docker run -p 8080:8080 mangrovemarkets
 
 ## Deployment
 
-### Deploy to Google Cloud Run
+### Automated Deployment via GitHub Actions
 
-1. Authenticate with GCP:
-```bash
-gcloud auth login
-gcloud config set project mangrove-markets
-```
+Deployment to Cloud Run happens automatically on every push to `main`:
 
-2. Run the deployment script:
-```bash
-./deploy.sh
-```
+1. **Set up GCP Service Account**:
+   ```bash
+   # Create service account
+   gcloud iam service-accounts create mangrovemarkets-deployer \
+       --display-name="MangroveMarkets Deployer" \
+       --project=mangrove-markets
 
-3. The script will:
-   - Create an Artifact Registry repository
-   - Build and push the Docker image
-   - Deploy to Cloud Run
-   - Output the service URL
+   # Grant necessary roles
+   gcloud projects add-iam-policy-binding mangrove-markets \
+       --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
+       --role="roles/run.admin"
+
+   gcloud projects add-iam-policy-binding mangrove-markets \
+       --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
+       --role="roles/artifactregistry.admin"
+
+   gcloud projects add-iam-policy-binding mangrove-markets \
+       --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
+       --role="roles/iam.serviceAccountUser"
+
+   # Create and download key
+   gcloud iam service-accounts keys create key.json \
+       --iam-account=mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com
+   ```
+
+2. **Add Secret to GitHub**:
+   - Go to: https://github.com/mangrove-one/MangroveMarkets/settings/secrets/actions
+   - Create new secret: `GCP_SA_KEY`
+   - Paste contents of `key.json`
+   - Delete `key.json` locally
+
+3. **Push to main**:
+   ```bash
+   git push origin main
+   ```
+
+The GitHub Actions workflow will:
+- Build the Docker image
+- Push to Artifact Registry
+- Deploy to Cloud Run
+- Service URL: https://mangrovemarkets-xxx-uc.a.run.app
 
 ### Custom Domain Setup
 
