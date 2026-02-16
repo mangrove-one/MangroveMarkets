@@ -11,7 +11,6 @@ env:
   PROJECT_ID: mangrove-markets
   REPO_NAME: mangrove-markets-repo
   IMAGE_NAME: mangrovemarkets
-  SERVICE_NAME: mangrovemarkets  # single Cloud Run service
 
 jobs:
   build-and-deploy:
@@ -32,13 +31,6 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
-
-      - name: Validate target Cloud Run service
-        run: |
-          if [ "${{ env.SERVICE_NAME }}" != "mangrovemarkets" ]; then
-            echo "This workflow only deploys the mangrovemarkets service."
-            exit 1
-          fi
 
       - name: Configure Docker for Artifact Registry
         run: |
@@ -70,7 +62,7 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy ${{ env.SERVICE_NAME }} \
+          gcloud run deploy mangrovemarkets \
             --region ${{ env.REGION }} \
             --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
             --platform managed \
