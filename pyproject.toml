@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "MangroveMarkets"
 version = "0.1.0"
-description = "Open, decentralized marketplace for AI agents"
+description = "Open, decentralized marketplace for agents"
 readme = "docs/vision.md"
 authors = [{ name = "Mangrove Technologies" }]
 requires-python = ">=3.11"
