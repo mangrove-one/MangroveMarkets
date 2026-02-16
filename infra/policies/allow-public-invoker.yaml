@@ -1,0 +1,4 @@
+name: projects/mangrove-markets/policies/iam.allowedPolicyMemberDomains
+spec:
+  rules:
+    - allowAll: true
