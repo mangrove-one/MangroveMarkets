@@ -9,13 +9,14 @@
 | Phase | Name | Focus | Depends On |
 |-------|------|-------|------------|
 | 0 | Project Setup | Structure, docs, conventions | — |
-| 1 | Foundation | Shared utils, MCP skeleton, wallet | Phase 0 |
-| 2 | Marketplace Core | Listings CRUD, search | Phase 1 |
+| 1a | Foundation — Core | Shared utils, MCP skeleton | Phase 0 |
+| 1b | Foundation — Wallet | XRPL wallet tools | Phase 1a |
+| 2 | Marketplace Core | Listings CRUD, search, metadata | Phase 1b |
 | 3 | Marketplace Settlement | Escrow, delivery, ratings | Phase 2 |
-| 4 | DEX Aggregator | Adapter interface, XPMarket | Phase 1 |
-| 5 | Storage & Delivery | IPFS integration, encryption | Phase 3 |
+| 4 | DEX Aggregator | Adapter interface, XPMarket | Phase 1b |
+| 5 | Storage & Delivery | IPFS content delivery, encryption | Phase 3 |
 | 6 | Metrics & Intelligence | Market data, usage metering | Phase 2 |
-| 7 | Integration Tools | Akash, Bittensor, Fetch.ai, Nodes.ai | Phase 1 |
+| 7 | Integration Tools | Akash, Bittensor, Fetch.ai, Nodes.ai | Phase 1b |
 | 8 | Production Readiness | DB persistence, auth, deployment | Phases 3-7 |
 
 Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
@@ -52,9 +53,9 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 
 ---
 
-## Phase 1: Foundation
+## Phase 1a: Foundation — Core
 
-**Goal**: Working MCP server with wallet tools on XRPL testnet.
+**Goal**: Working MCP server and shared services.
 
 ### Deliverables
 
@@ -64,12 +65,6 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 - `src/shared/types.py` — finalize shared types based on domain needs
 - `tests/shared/test_config.py`, `tests/shared/test_db.py`
 
-#### Wallet Agent
-- `src/wallet/xrpl_client.py` — XRPL connection manager (testnet)
-- `src/wallet/service.py` — wallet_create (faucet), wallet_balance, wallet_send, wallet_transactions
-- `src/wallet/tools.py` — replace stubs with working implementations
-- `tests/wallet/test_tools.py`, `tests/wallet/test_service.py`
-
 #### MCP Agent
 - `src/mcp/server.py` — verify all tool registrations work, server starts
 - Health check returns meaningful dependency status
@@ -78,29 +73,52 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 | Subagent | Task |
 |----------|------|
 | shared-agent | Config finalization, DB pooling, shared types |
-| wallet-agent | XRPL client, wallet service, wallet tools |
 | mcp-agent | Server verification, health check |
 
 ### Verification
 - [ ] MCP server starts and responds to tool discovery
+- [ ] Health check reports database status
+- [ ] All tests pass
+
+---
+
+## Phase 1b: Foundation — Wallet
+
+**Goal**: Wallet tools on XRPL testnet.
+
+### Deliverables
+
+#### Wallet Agent
+- `src/wallet/xrpl_client.py` — XRPL connection manager (testnet)
+- `src/wallet/service.py` — wallet_create (faucet), wallet_balance, wallet_send, wallet_transactions
+- `src/wallet/tools.py` — replace stubs with working implementations
+- `tests/wallet/test_tools.py`, `tests/wallet/test_service.py`
+
+### Subagent Assignments
+| Subagent | Task |
+|----------|------|
+| wallet-agent | XRPL client, wallet service, wallet tools |
+
+### Verification
 - [ ] `wallet_create` creates a funded wallet on testnet
 - [ ] `wallet_balance` returns correct balance
 - [ ] `wallet_send` transfers XRP between two testnet wallets
 - [ ] `wallet_transactions` returns transaction history
-- [ ] Health check reports database and XRPL status
+- [ ] Health check reports XRPL status
 - [ ] All tests pass
 
 ---
 
 ## Phase 2: Marketplace Core
 
-**Goal**: Agents can create and search listings.
+**Goal**: Agents can create and search listings with IPFS metadata.
 
 ### Deliverables
 
 #### Marketplace Agent
 - `src/marketplace/models.py` — finalize with validation
 - `src/marketplace/repository.py` — in-memory store (DB in Phase 8)
+- IPFS metadata upload for listings (store `metadata_uri` + `metadata_hash` on listing)
 - `src/marketplace/service.py` — create_listing, search, get_listing
 - `src/marketplace/tools.py` — replace stubs for create_listing, search, get_listing
 - `tests/marketplace/test_service.py`, `tests/marketplace/test_tools.py`
@@ -112,6 +130,7 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 
 ### Verification
 - [ ] `marketplace_create_listing` creates a listing and returns its ID
+- [ ] Listings include `metadata_uri` and `metadata_hash` stored on IPFS
 - [ ] `marketplace_search` finds listings by query, category, price range
 - [ ] `marketplace_get_listing` returns full listing details
 - [ ] Input validation works (bad category, negative price, etc.)
@@ -199,7 +218,7 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 
 ### Verification
 - [ ] Seller can upload encrypted content to IPFS
-- [ ] Listing includes storage_uri and content_hash
+- [ ] Listing includes delivery `storage_uri` and `content_hash` for content packages
 - [ ] Buyer receives decryption key on settlement
 - [ ] Content hash verification passes for valid content
 - [ ] Full static goods flow works end-to-end
@@ -241,6 +260,7 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 ### Deliverables
 - `src/integrations/tools.py` — replace stubs with real implementations
 - Start with one integration (likely Akash or Bittensor) as proof of concept
+- Define integration success metric and measurement harness
 - Others can remain as stubs with clear "coming soon" errors
 
 ### Subagent Assignments
@@ -250,6 +270,7 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 
 ### Verification
 - [ ] At least one `integration_*` tool works end-to-end
+- [ ] Integration success metric is met (e.g., ≥95% success in test harness)
 - [ ] Other integrations return clear "not yet implemented" errors
 - [ ] No proxying or intermediation — agent interacts directly
 
@@ -275,6 +296,7 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 #### All Agents
 - Error handling audit — verify all tools follow structured error convention
 - Input validation audit — verify all parameters are validated
+- Org policy review + public access checklist (rate limits, abuse, ToS)
 - Security audit — no secret logging, no hardcoded credentials
 
 ### Subagent Assignments
@@ -290,9 +312,39 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 - [ ] Auth works with real JWT tokens
 - [ ] CI/CD pipeline builds, tests, and deploys on merge
 - [ ] Health check verifies all dependencies
+- [ ] Org policy review approved
+- [ ] Public access checklist completed (rate limits, abuse handling, ToS)
 - [ ] No secrets in logs or code
 - [ ] All tools return structured errors
 - [ ] All tests pass in CI
+
+---
+
+## Marketing Site Track (Parallel)
+
+**Goal**: Public-facing marketing site for MangroveMarkets.
+
+**Depends On**: Phase 0 (branding, repo structure).
+
+### Deliverables
+- Landing page (value prop, CTA)
+- Product overview + roadmap highlights
+- FAQ and security posture summary
+- Waitlist/contact form wired to CRM or email list
+- SEO + analytics instrumentation
+
+### Subagent Assignments
+| Subagent | Task |
+|----------|------|
+| ui-agent | Marketing pages, design system alignment |
+| qa-agent | Link checks, basic QA |
+
+### Verification
+- [ ] Site deploys with correct branding and content
+- [ ] Waitlist/contact form submits successfully
+- [ ] All links and anchors work
+- [ ] SEO metadata present (title/description/open graph)
+- [ ] Analytics events fire for CTA clicks
 
 ---
 
@@ -301,8 +353,12 @@ Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 ```
 Phase 0 (Setup)
     │
+    ├──> Marketing Site Track (Parallel)
     v
-Phase 1 (Foundation: shared + wallet + MCP)
+Phase 1a (Foundation: core)
+    │
+    v
+Phase 1b (Foundation: wallet)
     │
     ├──────────────┬──────────────┐
     v              v              v
@@ -330,14 +386,16 @@ Phase 8 (Production Readiness)
 
 ## Parallelization Opportunities
 
-After Phase 1 completes:
+After Phase 1b completes:
 - **Marketplace Agent** can work on Phases 2→3→5 independently
 - **DEX Agent** can work on Phase 4 independently
 - **Metrics Agent** can start Phase 6 once Phase 2 data exists
-- **Integration work** (Phase 7) can happen anytime after Phase 1
+- **Integration work** (Phase 7) can happen anytime after Phase 1b
 - **Infra Agent** can prepare Terraform and CI/CD at any point
 
-Maximum parallelism: 5 subagents working simultaneously (marketplace, dex, metrics, integrations, infra).
+Marketing site work can run in parallel any time after Phase 0.
+
+Maximum parallelism: 6 subagents working simultaneously (marketplace, dex, metrics, integrations, infra, marketing).
 
 ### Cross-Cutting Agents (Available at Any Phase)
 

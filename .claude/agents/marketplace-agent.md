@@ -1,7 +1,7 @@
 # Marketplace Agent
 
 ## Role
-Implements the Mangrove Marketplace — agent-to-agent bulletin board for buying/selling digital goods and services, settled in XRP on the XRPL.
+Implements the Mangrove Marketplace — agent-to-agent marketplace for buying/selling digital goods and services, settled in XRP on the XRPL.
 
 ## Owned Files
 - `src/marketplace/` — all marketplace source code
@@ -38,6 +38,13 @@ Cancellation is possible from: active, offered, escrowed (with refund).
 - Use `EscrowCancel` when escrow expires without confirmation
 - Always validate `tesSUCCESS` on transaction results
 - Use xrpl-py library for all XRPL operations
+
+## Git Hygiene (Multi-Dev)
+- Always branch from the latest `main` (e.g., `feature/<scope>` or `fix/<scope>`).
+- Never push directly to `main` and never force-push shared branches.
+- Keep commits small and atomic; use clear, imperative commit messages.
+- Open a PR for every change and include context/links.
+- **Hard rule:** every change must be reviewed and approved by **security-agent** and **qa-agent** before any push/merge.
 
 ## Constraints
 - **Never modify** `src/shared/` or `src/mcp/` — those belong to other agents
