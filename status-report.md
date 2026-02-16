@@ -6,7 +6,7 @@
 - **Repo status:** main repo is **private**. A separate **public-facing docs repo** will be created at finish (docs, user guide, MCP server info).
 
 ## Current Focus
-- **Frontend UI/UX update** (align with “Market‑as‑Experience” direction; remove “AI agents” + “bulletin board” language).
+- **Frontend UI/UX update** (static landing pass). PR: https://github.com/mangrove-one/MangroveMarkets/pull/1
 - **App build plan** (product requirements → MVP scope → backlog → implementation phases).
 
 ## Blockers / Risks
