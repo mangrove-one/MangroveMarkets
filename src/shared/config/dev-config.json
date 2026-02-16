@@ -9,7 +9,7 @@
   "DB_USER": "postgres",
   "DB_PASSWORD": "secret:mangrovemarkets-config-dev:DB_PASSWORD",
   "DB_SSLMODE": "disable",
-  "CLOUD_SQL_CONNECTION_NAME": "null",
+  "CLOUD_SQL_CONNECTION_NAME": "secret:mangrovemarkets-config-dev:CLOUD_SQL_CONNECTION_NAME",
   "JWT_SECRET": "secret:mangrovemarkets-config-dev:JWT_SECRET",
   "AUTH_ENABLED": false,
   "MARKETPLACE_FEE_PERCENT": 1.0,

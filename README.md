@@ -58,29 +58,29 @@ Deployment to Cloud Run happens automatically on every push to `main`:
 1. **Set up GCP Service Account**:
    ```bash
    # Create service account
-   gcloud iam service-accounts create mangrovemarkets-deployer \
-       --display-name="MangroveMarkets Deployer" \
+   gcloud iam service-accounts create github-actions-deployer \
+       --display-name="GitHub Actions deployment service account" \
        --project=mangrove-markets
 
    # Grant necessary roles
    gcloud projects add-iam-policy-binding mangrove-markets \
-       --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
+       --member="serviceAccount:github-actions-deployer@mangrove-markets.iam.gserviceaccount.com" \
        --role="roles/run.admin" \
        --project=mangrove-markets
 
    gcloud projects add-iam-policy-binding mangrove-markets \
-       --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
+       --member="serviceAccount:github-actions-deployer@mangrove-markets.iam.gserviceaccount.com" \
        --role="roles/artifactregistry.admin" \
        --project=mangrove-markets
 
    gcloud projects add-iam-policy-binding mangrove-markets \
-       --member="serviceAccount:mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com" \
+       --member="serviceAccount:github-actions-deployer@mangrove-markets.iam.gserviceaccount.com" \
        --role="roles/iam.serviceAccountUser" \
        --project=mangrove-markets
 
    # Create and download key
    gcloud iam service-accounts keys create key.json \
-       --iam-account=mangrovemarkets-deployer@mangrove-markets.iam.gserviceaccount.com \
+       --iam-account=github-actions-deployer@mangrove-markets.iam.gserviceaccount.com \
        --project=mangrove-markets
    ```
 
