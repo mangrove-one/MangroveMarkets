@@ -6,8 +6,8 @@
 - **Cloud SQL (Postgres 16)** instance `mangrovemarkets-dev` created and DB `mangrove_dev` provisioned.
 - **App image built and pushed** to Artifact Registry (`mangrovemarkets:latest`).
 - **Cloud Run service deployed**: `mangrovemarkets-dev` (us-central1).
-- **Public access blocked** by org policy (`iam.allowedPolicyMemberDomains`); cannot grant `allUsers` invoker yet.
-- **Domain mapping pending** until public access is allowed and service URL confirmed.
+- **Public access enabled** (`allUsers` invoker set).
+- **Domain mapping pending** because `mangrovemarkets.com` is not yet verified in Google Search Console for this account.
 
 ## Current Service URL (Dev)
 - https://mangrovemarkets-dev-483282138591.us-central1.run.app
