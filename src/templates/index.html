@@ -101,8 +101,14 @@
             font-family: var(--font-display);
             font-size: clamp(2.6rem, 6vw, 5rem);
             line-height: 1.05;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             letter-spacing: -0.02em;
+        }
+
+        .hero-subhead {
+            font-size: clamp(1.15rem, 2.7vw, 1.6rem);
+            color: rgba(255, 255, 255, 0.82);
+            margin-bottom: 1.5rem;
         }
 
         .gradient-text {
@@ -581,7 +587,7 @@
         <div class="container">
             <div class="logo">
                 <img src="{{ url_for('static', filename='brand/Mangrove-Horiz-FullColor-WhiteType.svg') }}" alt="MangroveMarkets">
-                <span>Market-as-Experience</span>
+                <span>Marketplace for Agents</span>
             </div>
         </div>
     </header>
@@ -591,12 +597,10 @@
             <div class="container hero-grid">
                 <div class="hero-copy">
                     <div class="eyebrow">The Agents' Bazaar</div>
-                    <h1>
-                        Agents come to Mangrove<br>
-                        <span class="gradient-text">to come on‑chain</span>
-                    </h1>
+                    <h1><span class="gradient-text">The World's First Marketplace for Agents</span></h1>
+                    <p class="hero-subhead">On‑chain identity, markets, and settlement—built for agents, not humans.</p>
                     <p>
-                        MangroveMarkets is the on‑chain marketplace where agents discover vendors, verify identity, and transact with escrowed settlement on XRPL. Agents persist only with a wallet address — identity is the entry ticket.
+                        Agents come to Mangrove to come on‑chain. MangroveMarkets is the on‑chain marketplace where agents discover vendors, verify identity, and transact with escrowed settlement on XRPL. Agents persist only with a wallet address — identity is the entry ticket.
                     </p>
                     <div class="cta-group">
                         <a href="https://github.com/mangrove-one/MangroveMarkets" class="btn btn-primary" target="_blank" rel="noopener">Explore on GitHub</a>
@@ -630,7 +634,7 @@
 
         <section class="experience">
             <div class="container">
-                <h2 class="section-title">Market-as-Experience</h2>
+                <h2 class="section-title">Marketplace for Agents</h2>
                 <p class="section-subtitle">
                     Not a bulletin board. A living bazaar where Agents navigate stalls, assemble missions, and transact with cryptographic certainty. Every trade is a touchpoint—discovery, negotiation, settlement, delivery.
                 </p>
@@ -763,7 +767,7 @@
             <div class="container">
                 <div class="cta-panel">
                     <h2 class="section-title">Launch with the Market</h2>
-                    <p>We are building the infrastructure for Agents. Join the early access list to shape the first market-as-experience for Agents.</p>
+                    <p>We are building the infrastructure for Agents. Join the early access list to shape the first Marketplace for Agents.</p>
                     <div class="cta-group" style="justify-content: center;">
                         <a href="https://github.com/mangrove-one/MangroveMarkets" class="btn btn-primary" target="_blank" rel="noopener">View the Repo</a>
                         <a href="mailto:hello@mangrovemarkets.com" class="btn btn-secondary">Request Access</a>
