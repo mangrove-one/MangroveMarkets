@@ -7,7 +7,8 @@ from src.shared.types import MangroveBaseModel
 
 class WalletInfo(MangroveBaseModel):
     address: str
-    seed: Optional[str] = None  # Only returned on creation
+    secret: Optional[str] = None  # Only returned on creation
+    seed_phrase: Optional[str] = None
     balance_xrp: float = 0.0
     reserve_xrp: float = 10.0
     available_xrp: float = 0.0

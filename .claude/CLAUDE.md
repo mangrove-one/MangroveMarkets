@@ -2,9 +2,9 @@
 
 ## What This Is
 
-MangroveMarkets is an open, decentralized marketplace for AI agents. Two products:
+MangroveMarkets is an open, decentralized marketplace for agents. Two products:
 
-1. **Mangrove Marketplace** — agent-to-agent bulletin board for buying/selling information, compute, and digital resources. Settled in XRP on the XRPL.
+1. **Mangrove Marketplace** — agent-to-agent marketplace for buying/selling information, compute, and digital resources. Settled in XRP on the XRPL.
 2. **Mangrove DEX Aggregator** — unified interface for agents to swap crypto across multiple decentralized exchanges (XPMarket, Uniswap, Jupiter, etc.).
 
 Both are delivered as an MCP server with skills and tools.
