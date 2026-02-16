@@ -2,6 +2,8 @@
 
 This guide walks through connecting your GoDaddy domain to the MangroveMarkets Cloud Run service.
 
+> MangroveMarkets uses a single Cloud Run service named `mangrovemarkets`. The deploy workflow only targets this service and never deletes services.
+
 ## Prerequisites
 
 - Domain registered with GoDaddy (or any DNS provider)
