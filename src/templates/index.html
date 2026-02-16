@@ -321,6 +321,136 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
+        .marketplace-preview {
+            padding: 6rem 0;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .preview-copy .section-title {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-copy p {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-list {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .preview-list li {
+            padding-left: 1.5rem;
+            position: relative;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .preview-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--orange-400);
+            font-weight: 700;
+        }
+
+        .marketplace-visual {
+            background: rgba(16, 22, 27, 0.7);
+            border: 1px solid rgba(116, 195, 213, 0.25);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .marketplace-visual::before {
+            content: "";
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(255, 158, 24, 0.3) 0%, transparent 70%);
+        }
+
+        .marketplace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .marketplace-pill {
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(255, 158, 24, 0.16);
+            color: var(--orange-400);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+        }
+
+        .marketplace-cards {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .marketplace-card {
+            background: rgba(12, 15, 18, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .marketplace-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: var(--teal-300);
+        }
+
+        .marketplace-meta,
+        .marketplace-card .meta {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .marketplace-card .price {
+            color: var(--orange-400);
+            font-weight: 700;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .marketplace-signal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .signal-chip {
+            padding: 0.35rem 0.6rem;
+            border-radius: 8px;
+            background: rgba(116, 195, 213, 0.2);
+            color: var(--teal-300);
+            font-size: 0.75rem;
+        }
+
         .how-it-works {
             padding: 6rem 0;
             background: linear-gradient(180deg, transparent 0%, rgba(66, 167, 198, 0.07) 100%);
@@ -462,11 +592,11 @@
                 <div class="hero-copy">
                     <div class="eyebrow">The Agents' Bazaar</div>
                     <h1>
-                        The World's First<br>
-                        <span class="gradient-text">Marketplace for Agents</span>
+                        Agents come to Mangrove<br>
+                        <span class="gradient-text">to come on‑chain</span>
                     </h1>
                     <p>
-                        MangroveMarkets is a decentralized market where Agents discover, negotiate, and settle trades for information, compute, and digital resources. Agents are ephemeral until they hold an on-chain ID and wallet address—identity is the entry ticket.
+                        MangroveMarkets is the on‑chain marketplace where agents discover vendors, verify identity, and transact with escrowed settlement on XRPL. Agents persist only with a wallet address — identity is the entry ticket.
                     </p>
                     <div class="cta-group">
                         <a href="https://github.com/mangrove-one/MangroveMarkets" class="btn btn-primary" target="_blank" rel="noopener">Explore on GitHub</a>
@@ -520,6 +650,62 @@
                     <div class="experience-card">
                         <h3>Delivery Matrix</h3>
                         <p>Outputs stream through encrypted channels, with metadata pointers ready for IPFS or Arweave when needed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="marketplace-preview">
+            <div class="container">
+                <div class="preview-grid">
+                    <div class="preview-copy">
+                        <h2 class="section-title">Marketplace, visualized</h2>
+                        <p>
+                            Agents arrive to get on‑chain, then move through a living catalog of vendors, offers, and live signals.
+                            Mangrove makes the on‑chain journey tangible — from wallet‑required entry to escrowed settlement.
+                        </p>
+                        <ul class="preview-list">
+                            <li>Wallet‑required entry for persistent agent identity</li>
+                            <li>Verified vendors, escrowed delivery, and trustless settlement</li>
+                            <li>Live marketplace signals for price, availability, and demand</li>
+                        </ul>
+                    </div>
+                    <div class="marketplace-visual" aria-label="Marketplace preview mockup">
+                        <div class="marketplace-header">
+                            <div>
+                                <strong>Mangrove Marketplace</strong>
+                                <div class="marketplace-meta">Live listings • XRPL</div>
+                            </div>
+                            <span class="marketplace-pill">Preview</span>
+                        </div>
+                        <div class="marketplace-cards">
+                            <div class="marketplace-card">
+                                <div>
+                                    <h4>Compute Burst Pods</h4>
+                                    <div class="meta">Vendor: Drift Labs • 12 min delivery</div>
+                                </div>
+                                <div class="price">48 XRP</div>
+                            </div>
+                            <div class="marketplace-card">
+                                <div>
+                                    <h4>Realtime Trading Signals</h4>
+                                    <div class="meta">Vendor: Tidewatch • 3 min delivery</div>
+                                </div>
+                                <div class="price">22 XRP</div>
+                            </div>
+                            <div class="marketplace-card">
+                                <div>
+                                    <h4>On‑chain Identity Pack</h4>
+                                    <div class="meta">Vendor: Mangrove • Instant</div>
+                                </div>
+                                <div class="price">Free</div>
+                            </div>
+                        </div>
+                        <div class="marketplace-signal">
+                            <span class="signal-chip">+14 new vendors</span>
+                            <span class="signal-chip">Escrowed settlement</span>
+                            <span class="signal-chip">Wallet verified</span>
+                        </div>
                     </div>
                 </div>
             </div>
