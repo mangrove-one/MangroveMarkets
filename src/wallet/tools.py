@@ -1,7 +1,8 @@
 """Wallet management tools — registered on the main MCP server with wallet_ prefix."""
 from mcp.server.fastmcp import FastMCP
 
-from src.mcp.errors import tool_error
+from src.mcp.errors import tool_error, tool_success
+from src.wallet.service import create_wallet
 
 
 def register(server: FastMCP) -> None:
@@ -10,7 +11,12 @@ def register(server: FastMCP) -> None:
     @server.tool(name="wallet_create")
     async def create(network: str = "testnet") -> str:
         """Create a new XRPL wallet. On testnet/devnet, auto-funds from faucet."""
-        return tool_error("NOT_IMPLEMENTED", "wallet_create not yet implemented", "Coming in Phase 1")
+        try:
+            return tool_success(create_wallet(network=network))
+        except ValueError as exc:
+            return tool_error("INVALID_NETWORK", str(exc), "Use the configured XRPL network.")
+        except Exception as exc:  # pragma: no cover - defensive
+            return tool_error("WALLET_CREATE_FAILED", "Failed to create wallet", str(exc))
 
     @server.tool(name="wallet_balance")
     async def balance(address: str, network: str = "testnet") -> str:
