@@ -129,28 +129,27 @@ Then update your DNS records in GoDaddy (or your registrar) with the values prov
 - [Implementation Plan](docs/implementation-plan.md) — Phased build plan
 - [Brand Guidelines](docs/brand-guidelines.md) — Visual identity
 
-## Current State
+## Project Status
 
-- The application builds and runs locally (Flask `/`, `/health`, `/hello`).
-- Docker image builds; Docker Compose runs app + Postgres for local development.
-- GitHub Actions workflow for Cloud Run deployment exists.
-- Nothing is deployed to GCP; deployment is still needed in project `mangrove-markets`.
-- The GoDaddy domain `mangrovemarkets.com` is not yet mapped to Cloud Run.
-
-## Outstanding Tasks
-
-1. Deploy to GCP (project `mangrove-markets`).
-2. Connect GoDaddy domain `mangrovemarkets.com` to the Cloud Run service.
+- **Phase 0** (project setup): Complete.
+- **Phase 1b** (wallet_create): Complete -- `wallet_create` is a real implementation.
+- **Phase 4** (DEX baseline): Complete -- XPMarket adapter has real quoting; Uniswap/Jupiter have pair scaffolds.
+- **Next up**: Phase 1a.
+- The app builds and runs locally (Flask `/`, `/health`, `/hello`).
+- Docker image builds; Docker Compose runs app + Postgres for local dev.
+- One Cloud Run service (`mangrovemarkets`) deployed via GitHub Actions (WIF deploy).
+- Domain `mangrovemarkets.com` mapped to the Cloud Run service.
+- Repo is private; public docs/SDK repo planned.
 
 ## MCP Tools
 
-23 tools across 5 domains (all currently stubs):
+23 tools across 5 domains:
 
-- **Marketplace** (7): create_listing, search, get_listing, make_offer, accept_offer, confirm_delivery, rate
-- **DEX** (5): supported_venues, supported_pairs, get_quote, swap, swap_status
-- **Wallet** (4): create, balance, send, transactions
-- **Integrations** (4): akash_deploy, bittensor_query, fetch_discover, nodes_status
-- **Metrics** (3): market_overview, category_trends, price_history
+- **Marketplace** (7 -- stubs): create_listing, search, get_listing, make_offer, accept_offer, confirm_delivery, rate
+- **DEX** (5 -- 3 implemented, 2 stubs): supported_venues, supported_pairs, get_quote (implemented); swap, swap_status (stubs)
+- **Wallet** (4 -- 1 implemented, 3 stubs): create (implemented); balance, send, transactions (stubs)
+- **Integrations** (4 -- stubs): akash_deploy, bittensor_query, fetch_discover, nodes_status
+- **Metrics** (3 -- stubs): market_overview, category_trends, price_history
 
 ## Contributing
 
@@ -171,4 +170,3 @@ MIT
 ## Contact
 
 - GitHub: [@mangrove-one](https://github.com/mangrove-one)
-- Built with [Claude Code](https://claude.com/claude-code)
