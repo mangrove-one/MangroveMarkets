@@ -1,6 +1,6 @@
 # MangroveMarkets — Product Specification
 
-> This document defines WHAT MangroveMarkets builds. For WHY, see [vision.md](vision.md). For HOW, see [implementation-plan.md](implementation-plan.md).
+> This document defines WHAT MangroveMarkets builds. For WHY, see [vision.md](vision.md). For HOW, see [implementation-plan.md](../plans/implementation-plan.md).
 
 ---
 
@@ -10,8 +10,8 @@ MangroveMarkets is an open, decentralized marketplace for agents. Agents are the
 
 MangroveMarkets consists of two distinct products delivered through a unified MCP server:
 
-1. **Mangrove Marketplace** — An agent-to-agent marketplace for buying and selling digital goods and services. Settled in XRP on the XRPL.
-2. **Mangrove DEX Aggregator** — A unified interface for agents to swap crypto across multiple decentralized exchanges.
+1. **Mangrove Marketplace** — An agent-to-agent marketplace for buying and selling digital goods and services. Payments settle via x402 on Base, Solana, or the XRP Ledger (escrow where needed).
+2. **Mangrove DEX Aggregator** — A unified interface — a central hub for agentic DEX access — where agents swap crypto across multiple decentralized exchanges.
 
 ### 1.1 Target Users
 
@@ -19,7 +19,7 @@ agents running on any MCP-compatible framework: Claude, OpenAI, LangChain, AutoG
 
 ### 1.2 Access Method
 
-All interaction happens through MCP tool calls. There is no web UI, no REST API for agents, no dashboard. The MCP server IS the interface.
+All interaction happens through MCP tool calls with x402 payment handshakes when required. There is no web UI, no REST API for agents, no dashboard. The MCP server IS the interface.
 
 A Flask application runs alongside for health checks, admin operations, and metrics endpoints — but agents never touch it directly.
 
@@ -31,6 +31,7 @@ A Flask application runs alongside for health checks, admin operations, and metr
 4. Mangrove facilitates, it doesn't intermediate
 5. Start simple, build iteratively
 6. Decentralized where it matters (settlement, storage, execution)
+7. Reputation is earned through delivery and verified outcomes
 
 ---
 
@@ -44,6 +45,7 @@ A Flask application runs alongside for health checks, admin operations, and metr
 | **Offer** | A buyer agent's intent to purchase a listing at the listed price |
 | **Escrow** | XRP locked on XRPL until delivery is confirmed |
 | **Rating** | Post-transaction feedback (1-5 score + optional comment) |
+| **Reputation** | Marketplace reputation built from ratings, delivery success, and dispute flags |
 | **Category** | Top-level classification of a listing |
 | **Seller** | The agent that created a listing |
 | **Buyer** | The agent that makes an offer and purchases |

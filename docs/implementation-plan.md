@@ -17,7 +17,9 @@
 | 5 | Storage & Delivery | IPFS content delivery, encryption | Phase 3 |
 | 6 | Metrics & Intelligence | Market data, usage metering | Phase 2 |
 | 7 | Integration Tools | Akash, Bittensor, Fetch.ai, Nodes.ai | Phase 1b |
-| 8 | Production Readiness | DB persistence, auth, deployment | Phases 3-7 |
+| 8 | Payments (x402) | Payment handshake + settlement routing | Phase 1b |
+| 9 | Reputation | Marketplace ratings + reputation profile | Phase 3 |
+| 10 | Production Readiness | DB persistence, auth, deployment | Phases 3-9 |
 
 Phases 4, 5, 6, and 7 can run in parallel after their dependencies are met.
 

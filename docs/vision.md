@@ -14,7 +14,7 @@ MangroveMarkets is two distinct but connected products, delivered through a unif
 
 An agent-to-agent marketplace — like eBay, but for agents.
 
-Agents list what they have. Other agents find what they need. Transactions happen peer-to-peer, settled in XRP on the XRPL.
+Agents list what they have. Other agents find what they need. Transactions happen peer-to-peer, settled via x402 on Base, Solana, or the XRP Ledger.
 
 **What agents can sell:**
 - Information — datasets, feeds, research, signals, analysis
@@ -46,9 +46,9 @@ For compute and services (non-static goods), the flow is different:
 **What Mangrove does here:**
 - Hosts the catalog (the marketplace)
 - Facilitates discovery (search, filtering, category browsing)
-- Manages escrow via XRPL
+- Manages escrow where needed (XRPL)
 - Coordinates delivery (key exchange for data, access provisioning for services)
-- Tracks reputation (buyer/seller ratings after transactions)
+- Tracks marketplace reputation (buyer/seller ratings after transactions)
 
 **What Mangrove does NOT do here:**
 - Store the actual data (that's on IPFS/Arweave/Filecoin)
@@ -66,7 +66,7 @@ Market intelligence pricing: 10 XRP per 500 tool calls, with a free teaser tier 
 
 ### 2. The Mangrove DEX Aggregator
 
-A unified interface for agents to trade crypto across multiple decentralized exchanges.
+A unified interface — a central hub for agentic DEX access — where agents trade across multiple decentralized exchanges.
 
 Mangrove is NOT an exchange. Mangrove connects to real decentralized exchanges and presents one clean interface to the agent.
 
@@ -127,11 +127,11 @@ Example tools (conceptual, not final):
 - `akash_deploy` — deploy compute on Akash
 - `bittensor_query` — query the Bittensor network
 
-## Wallet Requirements
+## Wallets
 
-- **Marketplace participation**: Requires an XRP wallet (XRPL is the settlement layer)
-- **DEX Aggregator**: Agent uses whatever wallet matches the chain they want to trade on
-- **No wallet?**: Mangrove provides tools for agents to create and manage wallets
+- **Your wallet is your ticket.** Don’t have one? We’ve got you covered.
+- **Marketplace participation**: Agents create or attach a wallet for settlement and identity.
+- **DEX Aggregator**: Agents use wallets that match the chains they want to trade on.
 
 ## Categories
 
@@ -151,11 +151,16 @@ Top-level categories are predefined (10 max). Subcategories emerge organically f
 
 When enough listings cluster around a pattern within a category (e.g., many "sentiment analysis" listings under Intelligence), a subcategory forms automatically.
 
+## Payments (x402)
+
+Mangrove uses the x402 protocol as the default payment handshake for agent-to-agent transactions.
+Settlement occurs natively on Base, Solana, or the XRP Ledger, with escrow used for marketplace delivery when needed.
+
 ## Revenue Model
 
 | Source | Mechanism | Pricing |
 |---|---|---|
-| Marketplace transactions | Thin fee on XRP escrow settlements | Small % per transaction |
+| Marketplace transactions | Thin fee on escrow settlements | Small % per transaction |
 | DEX aggregator | Routing fee on swaps | Small % per swap |
 | Market intelligence | Tool call usage | 10 XRP / 500 tool calls (free teaser tier) |
 | Integration tools | Free | $0 — drives adoption |
@@ -164,7 +169,7 @@ When enough listings cluster around a pattern within a category (e.g., many "sen
 ## Principles
 
 1. **Agents are the users.** Every design decision is made for agent ergonomics, not human UX.
-2. **Open marketplace.** No gatekeeping, no approval process, no KYC. Show up with a wallet and participate.
+2. **Open marketplace.** No gatekeeping, no approval process, no KYC. Create or attach a wallet and participate.
 3. **Money is a means, not an end.** Agents use MangroveMarkets to get what they need to accomplish their goals, not to speculate.
 4. **Mangrove facilitates, it doesn't intermediate.** For integrations, Mangrove provides tools — it doesn't sit in the middle. For crypto, Mangrove routes — it doesn't execute.
 5. **Start simple, build iteratively.** Single-pair swaps before bridging. marketplace before order books. Reputation before dispute resolution.
