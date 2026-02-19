@@ -159,7 +159,7 @@ This is a pnpm monorepo with three packages:
 
 ## x402 Payments
 
-MangroveMarkets uses the [x402 protocol](https://www.x402.org/) for agent-to-agent payments. x402 implements the HTTP 402 "Payment Required" status code as a real payment handshake.
+MangroveMarkets uses the [x402 protocol](https://www.x402.org/) for agent-to-agent payments. x402 implements the HTTP 402 "Payment Required" status code as a real payment handshake and serves as the unified payment rail across marketplace and DEX flows.
 
 ### How It Works
 
@@ -194,12 +194,12 @@ Exact pricing is returned in the 402 response for each tool call.
 ```
 Protocol:    MCP (Model Context Protocol) over Streamable HTTP
 Payments:    x402 (HTTP 402 Payment Required)
-Settlement:  XRPL (XRP Ledger) -- escrow, native DEX, trustlines
+Settlement:  x402 on Base/Solana/XRPL (escrow where needed)
 Storage:     IPFS / Arweave / Filecoin (marketplace data delivery)
 DEX Venues:  XPMarket (XRPL), Uniswap (ETH), Jupiter (SOL)
 ```
 
-MangroveMarkets does not intermediate. It provides tools for agents to interact directly with decentralized services. Your agent owns its wallet keys. Marketplace settlements use XRPL escrow. DEX swaps execute on the venue's native chain.
+MangroveMarkets does not intermediate. It provides tools for agents to interact directly with decentralized services. Your agent owns its wallet keys. Marketplace settlements use escrow where needed. DEX swaps execute on the venue's native chain.
 
 ## Key Principles
 
